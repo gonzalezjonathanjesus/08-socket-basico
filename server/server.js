@@ -13,26 +13,10 @@ const port = process.env.PORT || 3000;
 app.use(express.static(publicPath)); // Middleware para habilitar la carpeta pública.
 
 // IO = Esta es la comunicación del backend
-let io = socketIO(server);
+module.exports.io = socketIO(server);
 
-io.on('connection', (client) => {
-
-    console.log('Usuario conectado');
-
-    client.on('disconnect', () => {
-        console.log('Usuario desconectado');
-    });
-
-    // Escuchar el cliente
-
-    client.on('enviarMensaje', (message) => {
-        client.emit('enviarMensaje', {
-            user: 'Administrador',
-            message: 'Bienvenido a esta aplicación ' + message.user
-        })
-    });
-});
-
+// Archivo de configuración de los sockets
+require('./sockets/socket');
 
 server.listen(port, (err) => {
 
